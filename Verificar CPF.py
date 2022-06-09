@@ -1,11 +1,10 @@
 from tkinter import *
 
-#def capitura(event = None):
 def capitura(event=None):    
     x=in3_fr1.get().replace('.','').replace('-', '')[:11]
     y=''
     if event.keysym.lower() == "backspace": return
-    for i in range (len(x)):
+    for i in range(len(x)):
         if not x[i] in '0123456789': continue
         if i in [2,5]:
             y+=x[i] + '.'
@@ -15,7 +14,9 @@ def capitura(event=None):
             y+=x[i]
     in3_fr1.delete(0, 'end')
     in3_fr1.insert(0, y)
-    
+#CRÉDITO ao JeanExtreme002. Resposta disponível em: https://pt.stackoverflow.com/questions/492705/criando-um-entry-formatado-para-cpf-em-python-tkinter#:~:text=Para%20formatar%20o%20CPF%20enquanto,e%20a%20fun%C3%A7%C3%A3o%20de%20formata%C3%A7%C3%A3o.
+
+
 #Criando Janela e Frames
 root = Tk()
 root.title('Cadastro')
