@@ -1,16 +1,21 @@
 from tkinter import *
 
 #def capitura(event = None):
-def capitura(*args):    
-    root.after(100, lambda: print("Procurando por", in3_fr1.get()))
-    x=in3_fr1.get()
-    if x.isnumeric():
-        if len(x) < 11:
-            x = x.zfill(11)
-        print(x)
-        cpf = set('{}.{}.{}-{}'.format(x[:3], x[3:6], x[6:9], x[9:]))
-    else:
-        print('Erro')
+def capitura(event=None):    
+    x=in3_fr1.get().replace('.','').replace('-', '')[:11]
+    y=''
+    if event.keysym.lower() == "backspace": return
+    for i in range (len(x)):
+        if not x[i] in '0123456789': continue
+        if i in [2,5]:
+            y+=x[i] + '.'
+        elif i == 8:
+            y+=x[i] + '-'
+        else:
+            y+=x[i]
+    in3_fr1.delete(0, 'end')
+    in3_fr1.insert(0, y)
+    
 #Criando Janela e Frames
 root = Tk()
 root.title('Cadastro')
@@ -35,10 +40,8 @@ in1_fr1 = Entry(fr1, font='Arial 25')
 in2_fr1 = Entry(fr1, font='Arial 25')
 
 
-
 in3_fr1 = Entry(fr1, font='Arial 25')
-#in3_fr1.bind("<Any-KeyPress>", capitura)
-in3_fr1.bind("<Any-KeyPress>", capitura)
+in3_fr1.bind("<KeyRelease>", capitura)
 
 
 
