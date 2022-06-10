@@ -1,22 +1,35 @@
 from tkinter import *
-
+#Função Tratar cpf
 def capitura(event=None):    
     x=in3_fr1.get().replace('.','').replace('-', '')[:11]
+    y=''
+    if event.keysym == "backspace": return
+    for i in range(len(x)):
+        if x[i] in '0123456789':
+            if i in [2,5]:
+                y+=x[i] + '.'
+            elif i == 8:
+                y+=x[i] + '-'
+            else:
+                y+=x[i]
+    in3_fr1.delete(0, 'end')
+    in3_fr1.insert(0, y)
+#Função Tratar Data
+def data(event=None):    
+    x=in2_fr1.get().replace('/','')[:8]
     y=''
     if event.keysym.lower() == "backspace": return
     for i in range(len(x)):
         if not x[i] in '0123456789': continue
-        if i in [2,5]:
-            y+=x[i] + '.'
-        elif i == 8:
-            y+=x[i] + '-'
+        if i in [1,3]:
+            y+=x[i] + '/'
         else:
             y+=x[i]
-    in3_fr1.delete(0, 'end')
-    in3_fr1.insert(0, y)
+    in2_fr1.delete(0, 'end')
+    in2_fr1.insert(0, y)
+#Função Tratar 
+
 #CRÉDITO ao JeanExtreme002. Resposta disponível em: https://pt.stackoverflow.com/questions/492705/criando-um-entry-formatado-para-cpf-em-python-tkinter#:~:text=Para%20formatar%20o%20CPF%20enquanto,e%20a%20fun%C3%A7%C3%A3o%20de%20formata%C3%A7%C3%A3o.
-
-
 #Criando Janela e Frames
 root = Tk()
 root.title('Cadastro')
@@ -31,21 +44,25 @@ root.grid_rowconfigure(1, weight=1)
 root.grid_columnconfigure(0, weight=1)
 root.grid_rowconfigure(2, weight=1)
 root.grid_columnconfigure(0, weight=1)
+#Nomes com a primeira letra maiuscula
+var =StringVar()
+def caps(*args):
+    var.set(var.get().title())
+var.trace("w", caps)
 #Label do 1º Frame:
 lb1_fr1 = Label(fr1, text='Nome:', font='Arial 25', padx=10, pady=10, bg='#49A')
 lb2_fr1 = Label(fr1, text='Data Nasc.:', font='Arial 25', padx=10, pady=10, bg='#49A')
 lb3_fr1 = Label(fr1, text='CPF:', font='Arial 25', padx=10, pady=10, bg='#49A')
 lb4_fr1 = Label(fr1, text='Telefone:', font='Arial 25', padx=10, pady=10, bg='#49A')
 #Entry do 1º Frame:
-in1_fr1 = Entry(fr1, font='Arial 25')
+in1_fr1 = Entry(fr1, font='Arial 25', textvariable=var)
 in2_fr1 = Entry(fr1, font='Arial 25')
+in2_fr1.insert(0, 'DD/MM/AA')
+in2_fr1.bind("<KeyRelease>", data)
 
 
 in3_fr1 = Entry(fr1, font='Arial 25')
 in3_fr1.bind("<KeyRelease>", capitura)
-
-
-
 in4_fr1 = Entry(fr1, font='Arial 25')
 #Pack
 fr1.grid(sticky=NSEW)
